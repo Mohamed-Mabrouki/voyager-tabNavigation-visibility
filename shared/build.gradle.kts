@@ -19,6 +19,8 @@ kotlin {
     }
 
     sourceSets {
+        val voyagerVersion = "1.0.0-rc07"
+
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
@@ -26,8 +28,13 @@ kotlin {
                 implementation(compose.material)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+
+                implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
+                implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
+                implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
             }
         }
+
         val androidMain by getting {
             dependencies {
                 api("androidx.activity:activity-compose:1.7.2")
