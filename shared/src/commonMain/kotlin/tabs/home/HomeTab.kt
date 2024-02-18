@@ -13,7 +13,9 @@ import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import cafe.adriel.voyager.transitions.SlideTransition
 
-object HomeTab : Tab {
+data class HomeTab(
+    val onClick:()->Unit,
+) : Tab {
 
     override val options: TabOptions
         @Composable
@@ -32,7 +34,10 @@ object HomeTab : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(screen = HomeScreen()) { navigator ->
+        Navigator(screen = HomeScreen(onClick = onClick)) { navigator ->
+
+            val size=navigator.size
+            println("home tab size:$size")
             SlideTransition(navigator = navigator)
         }
     }

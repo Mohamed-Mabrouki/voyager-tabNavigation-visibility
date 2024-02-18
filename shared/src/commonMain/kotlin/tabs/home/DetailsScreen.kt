@@ -21,18 +21,25 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 
 data class DetailsScreen(
     val id: Int,
+    val onClick: ()->Unit,
 ) : Screen {
 
     @Composable
     override fun Content() {
         val navigator: Navigator = LocalNavigator.currentOrThrow
+        val size=navigator.size
+        println("details size:$size")
 
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = { Text("Details") },
                     navigationIcon = {
-                        Button(onClick = { navigator.pop() }) {
+                        Button(onClick = {
+                            navigator.pop()
+                            //to make the bottom bar visible again
+                            onClick()
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
                                 contentDescription = "Back",

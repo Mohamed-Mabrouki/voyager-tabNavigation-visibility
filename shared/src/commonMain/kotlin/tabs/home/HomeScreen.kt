@@ -13,21 +13,30 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 
-class HomeScreen : Screen {
+data class HomeScreen(
+    val onClick:()->Unit,
+) : Screen {
 
     @Composable
     override fun Content() {
         val navigator: Navigator = LocalNavigator.currentOrThrow
+        val size=navigator.size
+        println("home size:$size")
 
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
+            Button(onClick = onClick){
+                Text("hide/show tab navigation")
+            }
             Text(text = "Home")
 
             Button(onClick = {
-                navigator.push(DetailsScreen(id = 1))
+                navigator.push(DetailsScreen(id = 1,onClick=onClick))
+                //to change the visibility of the tab navigation
+                onClick()
             }) {
                 Text(text = "Go to example details")
             }
