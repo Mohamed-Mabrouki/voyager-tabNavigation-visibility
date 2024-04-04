@@ -21,7 +21,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 
 data class DetailsScreen(
     val id: Int,
-    val onClick: ()->Unit,
 ) : Screen {
 
     @Composable
@@ -38,7 +37,6 @@ data class DetailsScreen(
                         Button(onClick = {
                             navigator.pop()
                             //to make the bottom bar visible again
-                            onClick()
                         }) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,

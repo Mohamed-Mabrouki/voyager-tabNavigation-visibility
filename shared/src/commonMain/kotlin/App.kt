@@ -24,55 +24,57 @@ import tabs.settings.SettingsTab
 
 @Composable
 fun App() {
-	MaterialTheme {
-		var isVisible by remember { mutableStateOf(true) }
-		TabNavigator(
-			tab = HomeTab(onClick = {
-				isVisible = !isVisible
-				println("tab visibility:$isVisible")
-			})
-		) {
-			val tabNavigator = LocalTabNavigator.current
+    MaterialTheme {
+        var isVisible by remember { mutableStateOf(true) }
+        val homeTab = remember {
+            HomeTab(
+                onNavigator = { isVisible = it }
+            )
+        }
 
-			Scaffold(
-				modifier = Modifier.fillMaxSize(),
-				bottomBar = {
-					AnimatedVisibility(visible = isVisible, enter = slideInVertically { height ->
-						height
-					}, exit = slideOutVertically { height ->
-						height
-					}) {
-						BottomNavigation {
-							TabNavigationItem(HomeTab(onClick = {
-								isVisible = !isVisible
-							}))
-							TabNavigationItem(SettingsTab)
-						}
-					}
-				},
-				content = { CurrentTab() },
-			)
-		}
-	}
+        TabNavigator(
+            tab = homeTab
+        ) {
+            val tabNavigator = LocalTabNavigator.current
+
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                bottomBar = {
+                    AnimatedVisibility(visible = isVisible, enter = slideInVertically { height ->
+                        height
+                    }, exit = slideOutVertically { height ->
+                        height
+                    }) {
+                        BottomNavigation {
+                            TabNavigationItem(homeTab)
+                            TabNavigationItem(SettingsTab)
+                        }
+                    }
+                },
+                content = { CurrentTab() },
+            )
+        }
+    }
 }
+
 @Composable
-private fun RowScope.TabNavigationItem(tab : Tab) {
-	val tabNavigator : TabNavigator = LocalTabNavigator.current
+private fun RowScope.TabNavigationItem(tab: Tab) {
+    val tabNavigator: TabNavigator = LocalTabNavigator.current
 
-	BottomNavigationItem(selected = tabNavigator.current == tab,
-		onClick = { tabNavigator.current = tab },
-		icon = {
-			tab.options.icon?.let { icon ->
-				Icon(
-					painter = icon, contentDescription = tab.options.title
-				)
-			}
-		},
-		label = {
-			Text(
-				text = tab.options.title
-			)
-		})
+    BottomNavigationItem(selected = tabNavigator.current == tab,
+        onClick = { tabNavigator.current = tab },
+        icon = {
+            tab.options.icon?.let { icon ->
+                Icon(
+                    painter = icon, contentDescription = tab.options.title
+                )
+            }
+        },
+        label = {
+            Text(
+                text = tab.options.title
+            )
+        })
 }
 
-expect fun getPlatformName() : String
+expect fun getPlatformName(): String
